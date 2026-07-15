@@ -3,7 +3,7 @@
   "description": "A suite of composable skills (Claude + OpenAI Codex) for taking an idea from fuzzy to validated to sequenced build to shipped, by hand or on autopilot: a manual tier (ideate, deep-dive, prompt-pack) and an autonomous tier (autopilot, build-loop, audit-and-fix).",
   "author": { "name": "Drew Nelson" },
   "homepage": "https://github.com/nelsonwerd/idea-to-ship-skills",
-  "repository": { "type": "git", "url": "https://github.com/nelsonwerd/idea-to-ship-skills" },
+  "repository": "https://github.com/nelsonwerd/idea-to-ship-skills",
   "license": "MIT",
   "keywords": ["ideation", "validation", "research", "planning", "design", "build", "skills", "prompt-engineering"]
 }
