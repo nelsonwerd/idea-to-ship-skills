@@ -69,9 +69,13 @@ Re-checked from git, the on-disk session transcripts, and a cold re-run of the f
 
 The honesty was mechanized, not narrated: gates are tests, enums are CHECK constraints, forbidden patterns are source-scans, and a "strength" structurally cannot coexist with a finding on the same dimension. When the product failed its own engine's cursor rule, the run fixed the product, not the rule. When its spec's draft heuristics measured broken on real data, it re-derived them from the data instead of shipping them. And the external audit it never saw confirmed its own pre-build risk flags on 4 of 5 load-bearing risks. The fifth is the SSRF above.
 
-## The cross-agent note (Claude vs Codex, n=2)
+## The cross-agent note (Claude vs Codex, n=2 — measured June 2026)
 
 The same suite and a comparable ask went to OpenAI Codex in parallel. It finished in about 15 minutes with "Prooflane" (an EU compliance workbench): 1,771 lines across 17 files, 12 tests, zero git commits, and a research phase of 6 files totaling 1,837 words written in one batch. Parts were genuinely good (custom palette, integrations honestly gated in the UI instead of faked), but the depth collapsed, and its "different-model critic" was GPT grading GPT at 7.2/10, against the skill docs' explicit instruction to run without a critic rather than self-grade. The pipeline's logic and honesty grammar ported; the depth, design system, and critic discipline did not. Two runs is an observation, not a measurement.
+
+> **This finding is dated, and the shelf life is short.** It was measured in **June 2026**, and — a gap worth admitting — **the exact Codex version was never recorded**, so it can't be reproduced against the thing it actually tested. Read it as *"one Codex version, on one design-heavy ask, on one day"* — **not** as a standing property of Codex. Frontier versions ship faster than this document updates, and a later one going deep would not make this entry wrong; it would make it **old**. If you're choosing an agent today, weight your own run over a dated one of ours.
+>
+> Note also *which* claim this is. It bundles two that come apart: **(a) depth** (did the pipeline go as far?) and **(b) taste-critic discipline** (did it self-grade instead of running a genuinely different model?). This ask was design-load-bearing, so it tested both at once. An infrastructure build where design isn't the wedge tests **(a)** and never touches **(b)** — so it could refute the depth finding while leaving the critic finding exactly as untested as it is now.
 
 ## What was removed from the published artifact
 

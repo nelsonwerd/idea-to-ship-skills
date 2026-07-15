@@ -123,6 +123,15 @@ And the half that makes this worth reading: the product thesis is **unproven** (
 
 > The built product must **not** be deployed publicly as-is. Details and disclaimers in the case study.
 
+## Also built with it
+
+Redline is the *stress test* — one heavy ask, on purpose. These are the ordinary use: real tools I needed, built with the suite and public, so the claims here have something to check.
+
+- **[wake](https://github.com/nelsonwerd/wake)** — a fleet supervisor for coding agents. More useful here as **provenance than as a product**: the `audit→fix` runs this repo distills were run *on wake*, so the failures in `audit-and-fix`'s rules table — the non-reproduction that turned out to be luck, the "zero adapter changes" plan that was wrong, the stray binary that staled a receipt — happened in that git history. Every rule was paid for; that's where the receipts are.
+- **[didrun](https://github.com/nelsonwerd/didrun)** — the evidence recorder `audit-and-fix` leans on: it records what actually ran (argv, real exit code, tree state) and grades claims against a sealed commit. It's a **first-draft tool, dogfooded** — the skill's own reference file lists the bugs these runs found in it. The skill needs *a* receipt tool, not *this* one; the discipline is portable, the tool is mine.
+
+> **Read the honest version of that claim.** These were built with the **method** `audit-and-fix` distills — not the skill, which postdates them by months. That distinction is load-bearing: the skill's own bounds say its `build-loop`-per-unit seam **has never actually run**. So wake is evidence the *audit→fix method* works and that its rules were earned — it is **not** evidence the skill is proven. Nothing here has been through it end-to-end yet.
+
 ## How they compose
 
 - `ideate` produces a **`CONCEPT_BRIEF.md`** — the single artifact `prompt-pack` consumes to author build prompts. (ideate delivers the *what & why*; prompt-pack derives the *how* from your actual code.)
@@ -171,12 +180,14 @@ The skill *format* is portable; some *runtime* features (parallel subagents, pro
 | **deep-dive** | Works (degraded: no repo/file access; lanes run serially) | **Best** — parallel subagents + web | Strong — same lanes run **serially** (lower cross-agent independence, so confidence is capped); external claims labeled *unverified* if no web | Works (degraded: serial lanes, local-only; label external claims *unverified*) |
 | **prompt-pack** | Limited — best for high-level planning/handoffs; weak without repo access | **Best** | **Best** — reads `AGENTS.md`, full repo access | Works — with repo/file access |
 | **build-loop** | Limited — no headless browser/Playwright; degrades to build/test/static checks (say so) | **Best** — interactive renderers + Playwright + a different-model critic | **Strong** — Playwright screenshot loop; the critic needs a separate model available | Works — wherever `bash` + a headless browser run |
-| **autopilot** | Not recommended — needs the full pipeline's tools | **Best** | Runs end-to-end — but shallow on our heavy test, and the critic needs a separate model (see the [case study](docs/CASE_STUDY_REDLINE.md)'s cross-agent notes) | Works — with repo + tool access |
-| **audit-and-fix** | Not recommended — needs repo access, `bash`, and `git` | **Best** — parallel audit lanes + autonomous unit execution | **Strong** — reads `AGENTS.md`, full repo access; audit lanes run **serially** (confidence capped accordingly) | Works — wherever repo access + `bash` + `git` run |
+| **autopilot** | Not recommended — needs the full pipeline's tools | **Best** | Runs end-to-end; went shallow + self-graded its critic on our **June 2026** heavy test — one dated data point, [cross-agent notes](docs/CASE_STUDY_REDLINE.md). Try it yourself before trusting that | Works — with repo + tool access |
+| **audit-and-fix** | Not recommended — needs repo access, `bash`, and `git` | **Best** — parallel audit lanes + autonomous unit execution | *Untested — inferred.* Should be strong (reads `AGENTS.md`, full repo access; audit lanes run **serially**, so confidence caps accordingly), but nobody has run it there yet | Works — wherever repo access + `bash` + `git` run |
 
 <sub>Menu names/commands drift between versions — the linked docs are the source of truth. Claude-specific bits (the plugin manifest format; deep-dive's parallel-subagent orchestration) don't all carry to Codex; the **methodology is fully portable** — `deep-dive` ships an *Environment & fallbacks* section that runs the same lanes serially when subagents aren't available, and `build-loop` falls back to a Playwright screenshot loop where interactive renderers aren't.</sub>
 
-> **On the autonomous tier specifically:** its design loop leans on a *different-model critic* + parallel orchestration that are richest in **Claude Code** — where it can spawn a genuinely different model to grade taste. In our runs, the *design* output was noticeably stronger on Claude; on Codex the pipeline still runs end-to-end, but it went much shallower on the same heavy ask (~15 minutes vs 13.5 hours; cross-agent notes in [the case study](docs/CASE_STUDY_REDLINE.md)), and without a separate model for the taste critic it degrades, so expect weaker polish. **Reach for Claude when feel is the wedge** — and either way, a human spot-check stays the final taste gate.
+> **On the autonomous tier specifically:** its design loop leans on a *different-model critic* + parallel orchestration that are richest in **Claude Code** — where it can spawn a genuinely different model to grade taste. In our runs the *design* output was noticeably stronger on Claude; the pipeline ran end-to-end on both. **Reach for Claude when feel is the wedge** — and either way, a human spot-check stays the final taste gate.
+>
+> **The one cross-agent measurement we have is dated — treat it as such.** In **June 2026**, on a design-load-bearing ask, Codex ran the whole pipeline but went much shallower (~15 min / 1,771 lines vs 13.5 hrs / ~27,000), and its "different-model critic" self-graded — GPT grading GPT — instead of running without one as the skill instructs ([cross-agent notes](docs/CASE_STUDY_REDLINE.md)). That was **one version, one ask, one day, n=2**, and the version wasn't even recorded. Frontier models move faster than this README does, so **weight your own run over our dated one** — and note the two halves come apart: a later Codex going deep would retire the *depth* finding while saying nothing about the *critic* one.
 
 ### Option 1 — Claude Code plugin (all skills, namespaced)
 ```bash
