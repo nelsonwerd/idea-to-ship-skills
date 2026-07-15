@@ -6,7 +6,7 @@
     {
       "name": "idea-to-ship",
       "source": "./",
-      "description": "Composable skills (Claude + OpenAI Codex) for the idea-to-ship pipeline — a manual tier (ideate, deep-dive, prompt-pack) and an autonomous tier (autopilot, build-loop)."
+      "description": "Composable skills (Claude + OpenAI Codex) for the idea-to-ship pipeline — a manual tier (ideate, deep-dive, prompt-pack) and an autonomous tier (autopilot, build-loop, audit-and-fix)."
     }
   ]
 }

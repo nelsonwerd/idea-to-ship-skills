@@ -1,6 +1,6 @@
 # Contributing to idea-to-ship
 
-Thanks for your interest. This repo is the **source of truth** for the idea-to-ship Agent Skills — five composable skills across two tiers (**manual:** `ideate` · `deep-dive` · `prompt-pack`; **autonomous:** `autopilot` · `build-loop`). They're *prose skills that ride an agent's existing tools*, not bespoke software — so contributing is mostly careful writing, not coding.
+Thanks for your interest. This repo is the **source of truth** for the idea-to-ship Agent Skills — six composable skills across two tiers (**manual:** `ideate` · `deep-dive` · `prompt-pack`; **autonomous:** `autopilot` · `build-loop` · `audit-and-fix`). They're *prose skills that ride an agent's existing tools*, not bespoke software — so contributing is mostly careful writing, not coding.
 
 ## Repo layout
 

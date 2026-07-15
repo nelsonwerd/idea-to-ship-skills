@@ -27,6 +27,8 @@ They're **separate, composable** skills on purpose — sharp triggers, lean cont
 
 → **drive each step yourself**, or let **`autopilot`** fly the whole line autonomously — in character as a grounded founder-persona — handing back a near-finish-line *first draft* plus an honest ledger of what only a human or the market can finish.
 
+→ Already have a codebase? **`audit-and-fix`** points the same autonomy backwards: **audit → triage → fix**, skipping ideation entirely (your code *is* the grounding) and stopping at verified local commits.
+
 ## Quickstart — try one first
 
 | If you want to… | Type this | You get back |
@@ -36,6 +38,7 @@ They're **separate, composable** skills on purpose — sharp triggers, lean cont
 | Turn settled scope into a build plan | "Make a prompt pack from `docs/CONCEPT_BRIEF.md`." (or "*X* is too big for one chat — make me a prompt pack.") | `docs/<TOPIC>_PROMPT_PACK.md` |
 | Drive a build to near-finish-line craft | "Loop on this until the core flows pass and the UI holds its design bar." | a self-verified, iterated build + an honest craft ledger |
 | Fly the whole pipeline autonomously | "Run autopilot on *X*." | a `CONCEPT_BRIEF`, a build pack, a first-draft app + an honest hand-off |
+| Audit a repo *and fix what's found* | "Audit this repo and fix what you find." | an audit + a triage verdict → verified local commits + an honest ledger |
 
 Each works standalone; run them in sequence — or on autopilot — for the full idea→ship pipeline.
 
@@ -96,6 +99,9 @@ Runs **ideate → deep-dive → prompt-pack → build-loop** end-to-end, in char
 ### 🔁 build-loop — *drive a build to near-finish-line craft*
 Loops **build → see → exercise → check → critique → rebuild** over the agent's existing tools (headless screenshot + vision to *see*, Playwright to *exercise*, axe/Lighthouse to *check*) until acceptance criteria pass or a stop-condition fires — no infinite thrash. When feel is load-bearing it runs a **mandatory, multi-pass visual design loop** (render → critique → fix → re-render, every iteration) with a different-model critic as the taste check. Honest bound: it flags *ugly/broken/missing* reliably but stays self-graded on *genuinely good* → a **human spot-check is the final taste gate**; market validation is out of scope. Triggers: *"tighten this build"*, *"iterate until it passes"*, *"self-verify the UI"*. *Suite-only — no standalone repo.*
 
+### 🔧 audit-and-fix — *audit an existing repo, then fix what's worth fixing*
+Runs **deep-dive → triage → prompt-pack → build-loop** on a codebase you already have — **composing** the manual-tier skills, never reimplementing them. `autopilot` builds something that doesn't exist and risks *inventing demand*; `audit-and-fix` repairs something that does and risks *breaking working software*. **Ideation is dropped entirely — your codebase replaces it as the source of truth.** Its signature move is the **triage verdict**: not "here are 30 findings," but *what's worth fixing given where you're headed* — an opinion, not a menu. Then **one gate**, and it runs to completion unattended: sequenced units, a red-first regression test per fix, verification receipts, one commit per verified unit. Honest bounds: **a receipt records what ran, it never proves correctness**; it only fixes what the audit found; the live/real-world tail (real accounts, the first CI run) is **never** cleared; and it stops at **local commits — never pushes, merges, tags, or publishes.** Triggers: *"audit this repo and fix what you find"*, *"audit and edit"*, *"deep dive then fix the bugs"*, *"autopilot this repo but skip the ideation"*. *Suite-only — no standalone repo.*
+
 *An optional `ground` module — real data to seed the persona and the build — is planned; the autonomous tier runs fully without it, and the firewall holds either way.*
 
 ## Case study: a 13.5-hour autonomous run
@@ -123,6 +129,7 @@ And the half that makes this worth reading: the product thesis is **unproven** (
 - `ideate` **delegates to `deep-dive`** when a concept needs heavy, current-sourced validation, and folds the verdict back into the brief.
 - `build-loop` drives any build — from a `prompt-pack` step or on its own — toward near-finish-line craft; it's the craft engine the autonomous tier leans on.
 - `autopilot` **composes all four** (ideate → deep-dive → prompt-pack → build-loop) to fly the whole pipeline autonomously — orchestration only, never reimplementing them.
+- `audit-and-fix` **composes three of them** (deep-dive → prompt-pack → build-loop) in the other direction: `deep-dive` *generates* the work instead of validating a brief, and its **Tier 0/1/2/3 fix list — already sized for one work session each — becomes `prompt-pack`'s units** directly. The two orchestrators share a tier and a discipline, but never each other's risks.
 - Each is also fully useful **on its own** — run `deep-dive` to audit a codebase, `prompt-pack` to sequence a refactor, `ideate` to gut-check an idea, `build-loop` to tighten a build — without the others.
 
 **Which skill for which question?** (they overlap on "evaluate / plan" — here's the precedence)
@@ -134,7 +141,10 @@ And the half that makes this worth reading: the product thesis is **unproven** (
 | *Scope is settled — sequence the build* | **prompt-pack** | reads `CONCEPT_BRIEF.md` if present; offers `ideate` first if the idea is unsettled |
 | *Does this build actually work + hold a craft bar?* | **build-loop** | loops see/exercise/critique until it passes or a stop-condition fires |
 | *Build the whole thing for me, autonomously* | **autopilot** | flies ideate→…→build-loop in-character; hands back a first draft + an honest ledger |
+| *Audit my repo **and fix** what you find* | **audit-and-fix** | audits read-only, triages against your next goal, takes one go, then fixes to verified local commits |
 | *Genuinely unclear* | ask one question | *viability direction, rigorous audit, execution-planning, or autonomous build?* |
+
+<sub>**deep-dive vs. audit-and-fix** — they overlap on *"audit this codebase"*, so: `deep-dive` answers *"is it sound?"* **and stops.** `audit-and-fix` answers *"is it sound, what's worth fixing given where you're headed — now go fix it."* **No intent to change the code → `deep-dive`** (it's also far cheaper).</sub>
 
 These compose, but each also runs alone — install only the one you need.
 
@@ -162,6 +172,7 @@ The skill *format* is portable; some *runtime* features (parallel subagents, pro
 | **prompt-pack** | Limited — best for high-level planning/handoffs; weak without repo access | **Best** | **Best** — reads `AGENTS.md`, full repo access | Works — with repo/file access |
 | **build-loop** | Limited — no headless browser/Playwright; degrades to build/test/static checks (say so) | **Best** — interactive renderers + Playwright + a different-model critic | **Strong** — Playwright screenshot loop; the critic needs a separate model available | Works — wherever `bash` + a headless browser run |
 | **autopilot** | Not recommended — needs the full pipeline's tools | **Best** | Runs end-to-end — but shallow on our heavy test, and the critic needs a separate model (see the [case study](docs/CASE_STUDY_REDLINE.md)'s cross-agent notes) | Works — with repo + tool access |
+| **audit-and-fix** | Not recommended — needs repo access, `bash`, and `git` | **Best** — parallel audit lanes + autonomous unit execution | **Strong** — reads `AGENTS.md`, full repo access; audit lanes run **serially** (confidence capped accordingly) | Works — wherever repo access + `bash` + `git` run |
 
 <sub>Menu names/commands drift between versions — the linked docs are the source of truth. Claude-specific bits (the plugin manifest format; deep-dive's parallel-subagent orchestration) don't all carry to Codex; the **methodology is fully portable** — `deep-dive` ships an *Environment & fallbacks* section that runs the same lanes serially when subagents aren't available, and `build-loop` falls back to a Playwright screenshot loop where interactive renderers aren't.</sub>
 
@@ -172,9 +183,9 @@ The skill *format* is portable; some *runtime* features (parallel subagents, pro
 /plugin marketplace add nelsonwerd/idea-to-ship-skills
 /plugin install idea-to-ship@nelsonwerd
 ```
-Or, in the desktop app's **Code** tab: click **+** next to the prompt → **Plugins** → add this marketplace and install. The skills become `/idea-to-ship:ideate`, `/idea-to-ship:deep-dive`, `/idea-to-ship:prompt-pack`, `/idea-to-ship:autopilot`, `/idea-to-ship:build-loop` and auto-activate on matching requests (run `/reload-plugins` if they don't appear).
+Or, in the desktop app's **Code** tab: click **+** next to the prompt → **Plugins** → add this marketplace and install. The skills become `/idea-to-ship:ideate`, `/idea-to-ship:deep-dive`, `/idea-to-ship:prompt-pack`, `/idea-to-ship:autopilot`, `/idea-to-ship:build-loop`, `/idea-to-ship:audit-and-fix` and auto-activate on matching requests (run `/reload-plugins` if they don't appear).
 
-> **Already have the skills installed manually?** They still work. To avoid duplicate names, remove the old copies first: `rm -rf ~/.claude/skills/{ideate,deep-dive,prompt-pack,autopilot,build-loop}`. (The plugin namespaces its skills, so it won't collide.)
+> **Already have the skills installed manually?** They still work. To avoid duplicate names, remove the old copies first: `rm -rf ~/.claude/skills/{ideate,deep-dive,prompt-pack,autopilot,build-loop,audit-and-fix}`. (The plugin namespaces its skills, so it won't collide.)
 
 ### Option 2 — copy the skills (any tool, always works — and the Codex path)
 ```bash
@@ -194,6 +205,7 @@ Each skill encodes a specific failure mode it prevents — learned the hard way 
 - **prompt-pack** stops a big build from *drifting* or *leaving the app half-broken between steps* — and keeps each unit small enough to outlast a context limit if you hit one.
 - **build-loop** stops a build from *looking done while half-wired* — it renders and exercises the real UI instead of trusting that it compiles, and reports a check it couldn't run as *not run*, never green.
 - **autopilot** stops an autonomous run from *overbuilding past its validated scope or faking a gate it actually abandoned* — the sharpest failure mode of "agent, go build it."
+- **audit-and-fix** stops an audit from *dying as a list nobody actions* — and stops the fixing from *quietly breaking the working software it was sent to improve*: every fix traces to a finding, proves it could reproduce the bug first, and lands only behind a receipt and an untouched regression fence.
 
 Small, sharp, composable tools across two tiers — not one monolith. That's the point.
 
@@ -208,6 +220,7 @@ This repo bundles the suite. The three **manual-tier** skills also have canonica
 | prompt-pack | https://github.com/nelsonwerd/prompt-pack-skill |
 | autopilot | *suite-only — no standalone repo* |
 | build-loop | *suite-only — no standalone repo* |
+| audit-and-fix | *suite-only — no standalone repo* |
 | *case study (the heavy autonomous run)* | https://github.com/nelsonwerd/redline-autopilot-case-study |
 
 ## License
