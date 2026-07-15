@@ -5,7 +5,7 @@
 Most "build with AI" workflows skip the hard half. They jump straight to code — and skip *deciding what's actually worth building*, *validating it honestly*, and *planning the build so it ships in safe, verifiable steps*. `idea-to-ship` is that missing front half — plus the autonomous build loop on the far side of it: a small, sharp suite of Agent Skills (they run in **Claude** and **OpenAI Codex**), reverse-engineered from real idea→ship journeys (including the mistakes those journeys made), so you don't repeat them.
 
 <p align="center">
-  <img src="assets/pipeline.svg" alt="The idea-to-ship pipeline — ideate → deep-dive → prompt-pack → build-loop — run by hand (manual tier) or via autopilot (autonomous tier)." width="760">
+  <img src="assets/pipeline.svg" alt="The idea-to-ship pipeline — ideate → deep-dive → prompt-pack → build-loop — run by hand (manual tier), or flown by the autonomous tier: autopilot flies the whole line from an idea, while audit-and-fix re-enters at deep-dive on a codebase that already exists (including the one autopilot just built), skipping ideation because the code is the grounding." width="760">
 </p>
 
 <p align="center">
@@ -27,7 +27,7 @@ They're **separate, composable** skills on purpose — sharp triggers, lean cont
 
 → **drive each step yourself**, or let **`autopilot`** fly the whole line autonomously — in character as a grounded founder-persona — handing back a near-finish-line *first draft* plus an honest ledger of what only a human or the market can finish.
 
-→ Already have a codebase? **`audit-and-fix`** points the same autonomy backwards: **audit → triage → fix**, skipping ideation entirely (your code *is* the grounding) and stopping at verified local commits.
+→ Already have a codebase? **`audit-and-fix`** points the same autonomy backwards: **audit → triage → fix**, skipping ideation entirely (your code *is* the grounding) and stopping at verified local commits. It's also the natural **second pass on an `autopilot` run** — autopilot hands back a first draft with a known correctness/security tail, and that tail is exactly what `audit-and-fix` is built to attack. (It doesn't close the *taste* or *market* half of that tail; those stay human.)
 
 ## Quickstart — try one first
 
@@ -129,7 +129,7 @@ And the half that makes this worth reading: the product thesis is **unproven** (
 - `ideate` **delegates to `deep-dive`** when a concept needs heavy, current-sourced validation, and folds the verdict back into the brief.
 - `build-loop` drives any build — from a `prompt-pack` step or on its own — toward near-finish-line craft; it's the craft engine the autonomous tier leans on.
 - `autopilot` **composes all four** (ideate → deep-dive → prompt-pack → build-loop) to fly the whole pipeline autonomously — orchestration only, never reimplementing them.
-- `audit-and-fix` **composes three of them** (deep-dive → prompt-pack → build-loop) in the other direction: `deep-dive` *generates* the work instead of validating a brief, and its **Tier 0/1/2/3 fix list — already sized for one work session each — becomes `prompt-pack`'s units** directly. The two orchestrators share a tier and a discipline, but never each other's risks.
+- `audit-and-fix` **composes three of them** (deep-dive → prompt-pack → build-loop) in the other direction: `deep-dive` *generates* the work instead of validating a brief, and its **Tier 0/1/2/3 fix list — already sized for one work session each — becomes `prompt-pack`'s units** directly. The two orchestrators share a tier and a discipline, but never each other's risks — **and they chain**: `autopilot` → `audit-and-fix` is the common second pass, aimed at the correctness/security tail autopilot's ~80% ceiling leaves behind.
 - Each is also fully useful **on its own** — run `deep-dive` to audit a codebase, `prompt-pack` to sequence a refactor, `ideate` to gut-check an idea, `build-loop` to tighten a build — without the others.
 
 **Which skill for which question?** (they overlap on "evaluate / plan" — here's the precedence)

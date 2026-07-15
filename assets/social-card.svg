@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
   <title id="t">idea-to-ship</title>
-  <desc id="d">idea-to-ship — composable Agent Skills for Claude and OpenAI Codex. Take an idea from fuzzy to shipped, by hand or on autopilot.</desc>
+  <desc id="d">idea-to-ship — composable Agent Skills for Claude and OpenAI Codex. Take an idea from fuzzy to shipped, by hand or on autopilot. Manual tier: ideate, deep-dive, prompt-pack. Autonomous tier: autopilot, build-loop, audit-and-fix.</desc>
   <rect width="1280" height="640" fill="#FBFAF8"/>
   <rect x="0" y="0" width="10" height="640" fill="#4F46E5"/>
   <text x="96" y="132" font-family="ui-monospace, 'SF Mono', monospace" font-size="20" letter-spacing="3" fill="#A7A299">AGENT SKILLS · CLAUDE + OPENAI CODEX</text>
@@ -9,6 +9,6 @@
   <text x="96" y="356" font-family="system-ui, -apple-system, sans-serif" font-size="34" fill="#5E5A52">Take an idea from <tspan font-style="italic">fuzzy → validated → sequenced build → shipped</tspan>.</text>
   <text x="96" y="424" font-family="system-ui, -apple-system, sans-serif" font-size="40" font-weight="700" fill="#1A1A1A">By hand, or <tspan fill="#4F46E5">on autopilot.</tspan></text>
   <line x1="96" y1="512" x2="1184" y2="512" stroke="#E7E4DD" stroke-width="2"/>
-  <text x="96" y="566" font-family="ui-monospace, 'SF Mono', monospace" font-size="22" fill="#8C877E"><tspan font-weight="700" fill="#5E5A52">MANUAL</tspan>  ideate · deep-dive · prompt-pack</text>
-  <text x="712" y="566" font-family="ui-monospace, 'SF Mono', monospace" font-size="22" fill="#7C73E8"><tspan font-weight="700" fill="#4F46E5">AUTONOMOUS</tspan>  autopilot · build-loop</text>
+  <text x="96" y="558" font-family="ui-monospace, 'SF Mono', monospace" font-size="22" fill="#8C877E"><tspan font-weight="700" fill="#5E5A52">MANUAL</tspan>  ideate · deep-dive · prompt-pack</text>
+  <text x="96" y="600" font-family="ui-monospace, 'SF Mono', monospace" font-size="22" fill="#7C73E8"><tspan font-weight="700" fill="#4F46E5">AUTONOMOUS</tspan>  autopilot · build-loop · audit-and-fix</text>
 </svg>

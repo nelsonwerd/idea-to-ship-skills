@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 760 252" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl desc">
+<svg viewBox="0 0 760 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl desc">
   <title id="ttl">idea-to-ship pipeline</title>
-  <desc id="desc">Four composable skills — ideate, deep-dive, prompt-pack, build-loop — taking an idea from fuzzy to shipped. Run them by hand (manual tier) or let autopilot fly the whole line (autonomous tier).</desc>
+  <desc id="desc">Four pipeline skills — ideate, deep-dive, prompt-pack, build-loop — taking an idea from fuzzy to shipped. Run them by hand (manual tier), or let the autonomous tier fly them: autopilot flies the whole line from an idea; audit-and-fix re-enters at deep-dive with a codebase that already exists — including the one autopilot just built — skipping ideation, because the code is the grounding.</desc>
   <defs>
     <marker id="arw" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto">
       <path d="M0 0 L8 4 L0 8 Z" fill="#C5C0B6"/>
     </marker>
+    <marker id="arwi" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#4F46E5"/>
+    </marker>
   </defs>
-  <rect x="2" y="2" width="756" height="248" rx="16" fill="#FBFAF8" stroke="#E7E4DD"/>
+  <rect x="2" y="2" width="756" height="310" rx="16" fill="#FBFAF8" stroke="#E7E4DD"/>
   <text x="20" y="38" font-family="ui-monospace, 'SF Mono', monospace" font-size="11" letter-spacing="1.5" fill="#A7A299">THE  IDEA → SHIP  PIPELINE</text>
   <text x="20" y="69" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#5E5A52">MANUAL <tspan fill="#A7A299" font-weight="400">— drive each step yourself</tspan></text>
   <g font-family="system-ui, -apple-system, sans-serif">
@@ -37,5 +40,12 @@
   </g>
   <rect x="20" y="170" width="720" height="40" rx="11" fill="#4F46E5"/>
   <text x="380" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#FFFFFF"><tspan font-weight="700">AUTONOMOUS</tspan><tspan fill="#CFCBFA"> — </tspan><tspan font-family="ui-monospace, 'SF Mono', monospace">autopilot</tspan><tspan fill="#CFCBFA"> flies the whole line</tspan></text>
-  <text x="380" y="236" text-anchor="middle" font-family="ui-monospace, 'SF Mono', monospace" font-size="10.5" fill="#A7A299">fuzzy idea → validated → sequenced build → shipped</text>
+  <path d="M700 210 V 226" stroke="#4F46E5" stroke-width="1.5" fill="none" marker-end="url(#arwi)"/>
+  <g font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#A7A299">
+    <text x="196" y="248" text-anchor="end">no ideation —</text>
+    <text x="196" y="262" text-anchor="end">the code is the grounding</text>
+  </g>
+  <rect x="210" y="232" width="530" height="40" rx="11" fill="#EEF0FF" stroke="#4F46E5"/>
+  <text x="475" y="257" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#4F46E5"><tspan font-family="ui-monospace, 'SF Mono', monospace" font-weight="700">audit-and-fix</tspan><tspan fill="#6B63E8"> — audit → triage → fix, on code that already exists</tspan></text>
+  <text x="380" y="298" text-anchor="middle" font-family="ui-monospace, 'SF Mono', monospace" font-size="10.5" fill="#A7A299">fuzzy idea → validated → sequenced build → shipped → audited → fixed</text>
 </svg>
