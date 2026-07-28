@@ -61,9 +61,10 @@ Hard rule: **invoke** each skill and carry its file forward; never inline its co
 1. **`ideate`** → a grounded `CONCEPT_BRIEF.md` — forced success-metric + kill-criterion, and (via its conditional-design forcing-function) a **substantive design direction** when feel is load-bearing.
 2. **`deep-dive`** → validates the brief's load-bearing claims with honest confidence + a ground-truth tally; its hand-back is folded into the brief (verdict, what's verified vs. still-a-bet).
 3. **`prompt-pack`** → sequences the *validated/gated* scope into self-contained build prompts; carries **execute-discipline**.
-4. **`build-loop`** → drives each shippable unit to near-finish-line craft on **two co-equal tracks** — the objective machine facts AND, when feel is load-bearing, the **mandatory multi-pass visual design loop**.
+4. **Gate-impact pass** → before each unit's build opens, enumerate the gates, frozen constraints, and conventions that unit's **planned surface** will trip, and clear them all in **one pass**. The mechanism lives in `prompt-pack`; autopilot's job is that the pass *happens*. **Not optional** — it is the phase gate between planning and building.
+5. **`build-loop`** → drives each shippable unit to near-finish-line craft on **two co-equal tracks** — the objective machine facts AND, when feel is load-bearing, the **mandatory multi-pass visual design loop**.
 
-Phase-by-phase orchestration (what each invocation gets, what carries forward, where the gates are): `references/pipeline-playbook.md`.
+Phase-by-phase orchestration (what each invocation gets, what carries forward, where the gates are): `references/pipeline-playbook.md` — the gate-impact pass sits between its Phase 3 and Phase 4.
 
 ## The autonomy contract
 
@@ -99,6 +100,14 @@ autopilot opens each run by emitting a **kickoff** that locks the run's frame, t
 
 A full autonomous run is long and may outlive one chat. **Files are the durable memory** — the `CONCEPT_BRIEF`, the pack, `build-loop`'s per-iteration ledger, any proof notes — never chat memory. Each phase's output is a file the next phase (or a future session) reads. If the run risks a context limit, emit a **`prompt-pack` Mode C handoff** so a fresh chat resumes cleanly with no amnesia.
 
+## Model tiering (spend reasoning where judgment lives)
+
+A long run accumulates **paperwork** — ledger and receipt copying, status/doc reconciliation, formatting gates, mechanical restatement of a contract already locked in a file. That work does not need frontier-tier reasoning; route it to a cheaper tier (or a script) and keep the strong tier where the run's quality actually comes from.
+
+- **Strong tier:** the brief's decisions, the design direction, `deep-dive`'s red-team, `build-loop`'s critique passes, and any debugging where the cause is still unknown.
+- **Cheap tier:** transcription, reformatting, filling a settled template, restating a locked decision, mechanical doc sync.
+- **The hard line:** anything making a **judgment call about correctness or honesty** stays on the strong tier — grading a gate, splitting verified vs. still-a-bet, writing the kill-ledger or the hand-off. Cheap-tiering a judgment call is how a run starts quietly overclaiming.
+
 ## Pitfalls to avoid
 
 - **Re-implementing a sub-skill** instead of invoking it. Compose, don't copy. (If you're pasting a funnel or a loop procedure, stop.)
@@ -106,6 +115,7 @@ A full autonomous run is long and may outlive one chat. **Files are the durable 
 - **Treating a synthetic persona's reaction to the solution as validation** — a firewall breach. Real data discovers + seeds; it never validates the solution.
 - **Claiming the output is finished / elite / validated.** It's a first draft; the market is the handoff; design has a human taste residual.
 - **Silently dropping a parked concept** — the kill-ledger forbids it.
+- **Opening a unit's build before its gate-impact pass** — discovering constraints one at a time turns one unit into a chain of stop-fix-resume detours, and each partial fix breeds the next.
 - **Letting the build phase go one-and-done or unit-test-substitute** — `build-loop`'s own rules require a genuine multi-pass loop and (when load-bearing) the visual design loop; surface the iteration count + design residual, don't paper over them.
 
 ## Scale heuristics

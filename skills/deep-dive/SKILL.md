@@ -139,6 +139,14 @@ Deploy an adversarial reviewer agent that:
 
 Red-team is non-negotiable for high-stakes outputs (anything touching money, safety, or production systems). Skippable only for low-stakes research.
 
+**Placement when this feeds a build.** If the deep dive runs ahead of implementation (design evaluation, spec review, a pack about to be executed), spend the deep, expensive adversarial pass **here — once, against the spec, before any code exists**, while every defect is still free to fix. Hunt specifically for:
+- Requirements that cannot be satisfied as written
+- Claims whose evidence could not actually be constructed
+- Contradictions between the spec and its own acceptance criteria
+- Assumptions about the runtime or toolchain that nobody has checked
+
+Repeating that full depth per sub-unit pays sharply diminishing returns. Later passes should be light sample-audits — spot-check a unit or two against those same four questions, and escalate back to a full red-team only if a sample fails.
+
 ### Phase 5: Patching (only on fresh, explicit approval)
 
 The skill defaults to research-only (see "Pure research vs. code changes"). Phase 5 is the **one** place it may touch source code, and only after clearing this gate — even if the user authorized an expensive run earlier, that authorized *analysis*, not edits.

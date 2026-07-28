@@ -61,6 +61,7 @@ If a defect lands in "cannot see," the loop's job is to **name it and hand it of
 You cannot loop without a target; a loop with no criteria either thrashes forever or stops arbitrarily. **Before iterating, lock:**
 1. **Acceptance criteria** — binary, checkable statements of "done" (a machine or a scripted flow can settle each). Detail + examples in `references/acceptance-criteria.md`.
 2. **The design bar — conditionally.** If experience/feel is load-bearing to this product (cf. `ideate`'s conditional-design forcing-function), carry a **substantive** design direction from the brief — target aesthetic/vibe, 1–2 reference points, key design principles, the intended "feel" — plus concrete design acceptance criteria, and compose `frontend-design` for the direction + craft. When it's load-bearing the **visual design loop is mandatory and runs every iteration** (step 2) — a passing unit test never substitutes for it. If it's a plain utility, the bar is **plain-but-clear** — say so and don't gold-plate it.
+3. **Every criterion countable or observable.** "Award-winning", "beautiful", "production-grade" are unfalsifiable — nothing can close them, so the loop thrashes until the budget runs out. Translate each stated goal into criteria a machine or a scripted flow can settle (states present, contrast ratio, flows completing end-to-end, budgets met), and say plainly which part is **self-graded taste**. A goal that won't translate isn't an acceptance criterion — it's a human gate; name it as one.
 
 If these don't exist yet, write them first (or pull them from the `CONCEPT_BRIEF.md` / pack). No criteria → no loop.
 
@@ -83,12 +84,30 @@ Stop and report the moment **any** of these fires:
 
 - **PASS** — **no open Blocker/High/Medium defect on either track**: all acceptance criteria met, build/tests green, and (when design is load-bearing) the design bar met via the visual loop. A green build/test alone is **not** PASS — and neither is "fixed a couple of things" while the ledger or the critic still lists open Medium+ defects. (Success — hand off; any Low/Note residue goes in the report.)
 - **PLATEAU** — **2 consecutive iterations with genuinely no progress** (no acceptance criterion newly passed AND no defect of severity ≥ Medium closed). A re-critique or the different-model critic **surfacing new Medium+ defects is progress to act on next pass, not a plateau.** (True diminishing returns — hand off what's left.)
-- **BUDGET** — the iteration cap is reached (**default 5; never set below 3 for a design-load-bearing build; caller-settable**). This is the finite hard backstop.
+- **BUDGET** — the rebuild cap for this surface is reached (**default 4 rebuild passes per surface, plus at most one different-model critic pass; never set below 3 for a design-load-bearing build; caller-settable**). This is the finite hard backstop. When it fires, **ship the strongest version you have** and record what you'd do next — the open queue is the hand-off, not a reason to keep swinging.
 - **BLOCKED** — the next defect needs a human or real-world signal the loop can't get (a taste call, an external-oracle/content check, a paste-into-production test). **STOP and emit it** as a human gate — carrying `prompt-pack`'s execute-discipline: never fake it, render a passed-looking result, or build past it to look complete.
 
 **Why this can't infinite-loop:** BUDGET is an unconditional counter — even if PASS, PLATEAU, and BLOCKED never trigger, the loop halts at N iterations. The other three only ever stop it *sooner*. Every run terminates.
 
 Always report the **iteration count** (how many full passes ran), the **per-iteration ledger** (both tracks), **which condition fired**, and the **open-defect queue at stop** — so a one-pass run on a non-trivial build is visibly incomplete and a premature stop is obvious. The craft-delta is the ledger, not a vibe. (More passes close *checkable* defects — they don't reach the last-mile tail the loop can't see; don't read "more iterations" as "perfect.")
+
+## Scope the battery to the change (claim-narrowing, never gate-weakening)
+
+Re-running the entire battery for every change is quadratic — the battery grows, each pass costs more, and eventually verification is the whole run. Scope each pass by what the change can actually reach.
+
+- **Full battery** — any change that can affect product behaviour. This is the default; when in doubt, you're here.
+- **Scoped battery** — changes that *provably cannot* touch product behaviour: tooling, docs, the verification machinery itself. Run what the change reaches, and **state in the ledger what the scoped run asserts and what it inherits rather than re-proves.**
+- **Repeat/stability runs** (10×, 50×) — only where there's prior evidence of flakiness in that surface, never as a standing tax on every pass.
+
+**This is claim-narrowing, not gate-weakening.** A narrower run must assert **strictly less** and say so out loud — it never lets a defect past a gate that would otherwise have caught it, and it never re-labels an unrun check as green. If you can't name precisely what the scoped run inherits, you haven't narrowed the claim: run the full battery.
+
+## Keep the verification machinery proportionate
+
+Verification apparatus compounds. Every check you add is re-run, maintained, and repaired forever after — left unbounded it quietly consumes the run, and you end up with more checker than product.
+
+- **If you're writing a checker whose job is to police another checker** — or a repair whose only purpose is to let a previous verification close — **stop and simplify rather than extend.** That's the apparatus feeding itself, not the build getting safer.
+- **If a single atomic verification chain grows longer than the window in which it reliably completes**, split it into independently-provable segments. A late failure in a long chain discards every good result before it, and you pay the whole chain again just to reach the next defect.
+- Watch the ratio: when the machinery is growing faster than the thing it verifies, that's the signal to cut, not to build more.
 
 ## The different-model critic (default when design is load-bearing; optional for plain utilities)
 
@@ -113,6 +132,8 @@ The method is portable; only the tooling degrades. Substitute the fallback and *
 ## Pitfalls to avoid
 
 - **Looping with no acceptance criteria** — guarantees thrash or an arbitrary stop. Lock the target first.
+- **Chasing an unfalsifiable bar** — "make it beautiful / award-winning / production-grade" can never be closed, so the loop just burns the budget. Translate it into countable criteria before iterating, and label the taste part self-graded.
+- **Re-proving what the change couldn't have touched** — a full battery on a docs or tooling edit isn't rigour, it's cost. Narrow the *claim* honestly instead — never the gate.
 - **Substituting a unit test for the visual loop when design is load-bearing** — a green programmatic check is *not* a design pass. If feel is load-bearing, render + screenshot + critique the real UI every iteration, or report the visual loop NOT RUN. (This is the exact shortcut a proof run took once — don't repeat it.)
 - **One-shot design instead of iterated** — judging the UI once and never again. The design bar is advanced every iteration alongside the machine facts, not eyeballed at the end.
 - **One-and-done** — fixing a defect or two, then declaring done while the critic or the ledger still lists open Blocker/High/Medium defects. That's stopping *before* a real stop-condition fires; keep looping until none are open or BUDGET hits. (The exact shortcut a proof run took: one fix, the critic surfaced more, it stopped anyway.)
@@ -128,7 +149,7 @@ The method is portable; only the tooling degrades. Substitute the fallback and *
 | Situation | What to run |
 |---|---|
 | A tiny change that just needs to compile | One pass: build + test, eyeball. No full loop. |
-| A fresh scaffold or feature (plain utility) | Full loop, N≈3–5, acceptance criteria; design bar = plain-but-clear. |
+| A fresh scaffold or feature (plain utility) | Full loop, N≈3–4, acceptance criteria; design bar = plain-but-clear. |
 | A build where feel **is** the wedge | Full loop with the **visual design loop every iteration** (render → screenshot key states × viewports → critique) + the different-model critic **by default** + a flagged human spot-check as the final taste gate; substantive design bar (compose `frontend-design`). |
 | A non-browser CLI/library/backend | Build/test + targeted exercise; skip *see*; objective signals only. |
 

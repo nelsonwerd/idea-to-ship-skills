@@ -71,7 +71,8 @@ These hold across all three modes. They are the difference between a pack that s
 6. **Never commit unless the user explicitly says so.** Each prompt produces local changes only; the user reviews and says go. (See the project's commit conventions — e.g. message format, no co-author trailer — and inherit them into the pack's rules block.)
 7. **The pack file is the source of truth.** Save it in the repo (`docs/`) so it survives the chats that consume it. If a session seems confused, point it at the pack.
 8. **Independently shippable order.** Sequence so each phase can ship on its own and earlier prompts unblock later ones. State the sequencing rationale explicitly.
-9. **Build only the gated scope; never fake a gate.** Build *only* the validated/gated scope — never extra breadth to look "complete." If a prompt's gate needs a human or real-world signal you don't have (a real-use test, a taste call, a paste-into-prod check), **STOP and emit the gate** — name what's unverified and who must clear it; never fake it, render a "passed"/inert gate, or build past it. (Detail in `references/execution-guide.md`.)
+9. **Clear the collision set before the build loop opens.** A unit's planned surface will trip constraints the repo already froze — file rosters, layering rules, snapshot tests, required checks. Find *all* of them in one pass and clear them in one boundary before any real code is written; never discover them one build failure at a time. (Procedure in Mode A step 3.)
+10. **Build only the gated scope; never fake a gate.** Build *only* the validated/gated scope — never extra breadth to look "complete." If a prompt's gate needs a human or real-world signal you don't have (a real-use test, a taste call, a paste-into-prod check), **STOP and emit the gate** — name what's unverified and who must clear it; never fake it, render a "passed"/inert gate, or build past it. (Detail in `references/execution-guide.md`.)
 
 ## Mode A — Authoring a pack
 
@@ -79,12 +80,14 @@ Goal: turn a big request into a sequenced, self-contained pack saved to `docs/<T
 
 1. **Check for a settled concept first.** Glance for a `CONCEPT_BRIEF.md` — check `docs/` first, then the repo root, then a shallow glob (a greenfield brief may sit at the root, and `ideate` should have handed you its exact path). If it exists, read it as the source of truth — its Locked decisions, Scope OUT, and phased roadmap map directly onto this pack's inputs (treat Locked decisions as fixed and Scope OUT as the scope fence). **Sanity-check it against current reality before building on it:** if the brief carries a `Validated against:` commit/date, diff against `git` to see how far the tree has moved; if its Locked decisions or Scope no longer match the code, flag the drift and offer a quick re-validation (hand back to `ideate`) rather than sequencing a stale plan as gospel. If there's no brief **and** the request is an unsettled product idea rather than a concrete code change, gently offer to validate the concept first — *"This reads like an idea that hasn't been pressure-tested yet. If you have the `ideate` skill, it's worth locking the concept before we sequence the build — want to do that first, or proceed?"* — then do whatever they choose. If they choose to skip validation, note it as a risk in the pack. Do **not** block a concrete, already-decided change (a refactor, a defined feature) — that has settled scope by definition; proceed straight to recon.
 2. **Architecture reconnaissance (read-only).** Map the real code before planning. Identify every file the job touches and capture them in an **Architecture Map** (with file:line refs) so executing sessions don't rediscover them.
-3. **Lock decisions & scope.** Record the agreed design decisions ("Locked Decisions") and an explicit **"What this pack does NOT cover"** list.
-4. **Phase the work.** Group into phases where each is independently shippable. Write a short **Sequencing Rationale** (why this order; what each phase unblocks).
-5. **Decompose into prompts.** One shippable unit each. For every prompt, fill the **per-prompt anatomy** (Risk · Files · Read-first · Why/Goal · Scope-exact-changes · What MUST NOT change · Tests · Verification · Risk register · Commit message · "When done / do not commit").
-6. **Inherit project conventions.** Pull the build/test commands and the rules block from the project's `CLAUDE.md` / `AGENTS.md` / auto-memory so every prompt is correct for *this* repo.
-7. **Add the closers.** A combined verification matrix (after multiple prompts ship) and a pre-flight checklist the user runs before handing off.
-8. **Save & summarize.** Write the file; tell the user the execution order and how to run it (one prompt per fresh chat, verify, commit, next).
+3. **Pre-flight constraint scan (read-only, before phasing).** Take the planned surface from recon — the paths, exported symbols, and imports the job will add or move — and enumerate *everything* it will collide with, in one pass. Look for: frozen file rosters/manifests, import or layering rules, public-API snapshot tests, architecture/dependency checkers, codegen manifests, `CODEOWNERS`, required CI checks, schema/migration conflicts, and existing test contracts. The portable mechanism needs no cooperation from the checkers: scaffold stub files at the planned paths carrying the planned exported symbols and imports → run the *full* existing gate/lint/build/test battery → collect **every** failure (that set is the collision set) → delete the stubs → resolve all the admissions in a single boundary before writing real code. Keep the scaffold import-faithful; name-only stubs miss the collisions that only fire on a real edge. Then fold the result into the pack — as P1 ("clear the admissions") or as a prerequisite in the pre-flight checklist. Serial discovery is the failure mode: each collision found by a build failure costs a full context switch, and an admission derived from a partial view of the surface breeds the next one.
+4. **Lock decisions & scope.** Record the agreed design decisions ("Locked Decisions") and an explicit **"What this pack does NOT cover"** list.
+5. **Phase the work.** Group into phases where each is independently shippable. Write a short **Sequencing Rationale** (why this order; what each phase unblocks).
+6. **Decompose into prompts.** One shippable unit each. For every prompt, fill the **per-prompt anatomy** (Risk · Files · Read-first · Why/Goal · Scope-exact-changes · What MUST NOT change · Tests · Verification · Risk register · Commit message · "When done / do not commit").
+7. **Give each prompt its own scoped brief.** The prompt carries the unit's context: its contract (what it consumes, what it must expose, the interfaces it touches), its file:line map, and a short **Constitution** — the locked decisions it may not reopen. Name the specific docs and sections the unit needs, never the whole doc set: a fresh session re-reading every controlling document burns its context on material the unit doesn't touch, and re-litigates decisions that were settled when the pack was written.
+8. **Inherit project conventions.** Pull the build/test commands and the rules block from the project's `CLAUDE.md` / `AGENTS.md` / auto-memory so every prompt is correct for *this* repo.
+9. **Add the closers.** A combined verification matrix (after multiple prompts ship) and a pre-flight checklist the user runs before handing off.
+10. **Save & summarize.** Write the file; tell the user the execution order and how to run it (one prompt per fresh chat, verify, commit, next).
 
 ## Mode B — Executing a pack prompt
 
@@ -105,7 +108,7 @@ Goal: a single paste-ready message that lets a fresh chat (or another tool) resu
 - Pack file: `docs/<TOPIC>_PROMPT_PACK.md` (e.g. `ONBOARDING_REBUILD_PROMPT_PACK.md`, `CURRENCY_FIX_PROMPT_PACK.md`).
 - Handoff doc: `docs/<TOPIC>_HANDOFF.md` (or `<TOPIC>_PROMPT.md` for a single-shot brief).
 - Prompt IDs: `P1 → P2 → …` for linear packs, or phase-letter + number (`A1`, `C3`, `F1a`/`F1b`) when grouped into phases. State the execution order explicitly with commit boundaries between units.
-- Companion docs: list them in each prompt's "Read first" so a fresh chat can reconstruct full context.
+- Companion docs: list them in each prompt's "Read first" — name the specific files and sections *that unit* needs, not the whole doc set, so a fresh chat reconstructs exactly the context it will use.
 
 ## Universal rules (inherit + adapt per project)
 
@@ -133,6 +136,8 @@ The skill is portable; the *project-specific* facts (exact build/test commands, 
 - **Over-scoping a single prompt.** If a prompt touches many subsystems, split it. One shippable unit.
 - **Rendering a gate you didn't pass.** Over-delivering past a prompt's gated scope and dressing it in "gate passed" / inert-gate language (or a hardcoded "pending") is worse than stopping — it *looks* validated while having skipped the check. If a gate needs a human or real-world signal you don't have, stop and emit it; never fake it.
 - **Skipping the read-only architecture reconnaissance when authoring.** Plans written without reading the code produce wrong file lists and wrong sequencing.
+- **Discovering gate collisions serially.** Entering the build without the pre-flight constraint scan turns every frozen roster, layering rule, and snapshot test into its own stop-fix-resume cycle — and a fix built from a partial view of the surface generates the next collision rather than ending them.
+- **Handing a fresh chat the whole doc set.** "Read everything in `docs/`" is not context — it's token spend on material the unit doesn't touch, and an invitation to reopen decisions the pack already locked. Scope the brief to the unit.
 
 ## Scale heuristics
 
